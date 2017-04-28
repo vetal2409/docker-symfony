@@ -88,10 +88,11 @@ This results in the following running containers:
 $ docker-compose ps
            Name                          Command               State              Ports            
 --------------------------------------------------------------------------------------------------
-dockersymfony_db_1            /entrypoint.sh mysqld            Up      0.0.0.0:3306->3306/tcp      
-dockersymfony_elk_1           /usr/bin/supervisord -n -c ...   Up      0.0.0.0:81->80/tcp          
-dockersymfony_nginx_1         nginx                            Up      443/tcp, 0.0.0.0:80->80/tcp
-dockersymfony_php_1           php-fpm                          Up      0.0.0.0:9000->9000/tcp      
+symfony_db            /entrypoint.sh mysqld            Up      0.0.0.0:33060->3306/tcp      
+symfony_elk           /usr/bin/supervisord -n -c ...   Up      0.0.0.0:810->80/tcp          
+symfony_nginx         nginx                            Up      443/tcp, 0.0.0.0:800->80/tcp
+symfony_php           php-fpm                          Up      0.0.0.0:9000->9000/tcp      
+
 ```
 
 ## Useful commands
@@ -146,5 +147,5 @@ Just config your IDE to connect port  `9001` and id key `PHPSTORM`
 ## Contributing
 
 First of all, **thank you** for contributing ♥  
-If you find any typo/misconfiguration/... please send me a PR or open an issue. You can also ping me on [twitter](https://twitter.com/_maxpou).  
+If you find any typo/misconfiguration/... please send me a PR or open an issue.
 Also, while creating your Pull Request on GitHub, please write a description which gives the context and/or explains why you are creating it.
