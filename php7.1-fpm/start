@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Configure PHP date.timezone
+echo "date.timezone = $PHP_TIMEZONE" > /usr/local/etc/php/conf.d/timezone.ini
+
 # Enable XDebug if needed
 if [ "$XDEBUG_ENABLE" = "1" ]; then
     docker-php-ext-enable xdebug
