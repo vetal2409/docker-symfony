@@ -3,12 +3,19 @@ FROM php:7.1.4-fpm
 
 MAINTAINER Vitalii Sydorenko <vetal.sydo@gmail.com>
 
+# Install programs
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    gzip \
     nano \
     curl \
     tree
+
+## Install apt-utils
+#ARG DEBIAN_FRONTEND=noninteractive
+#RUN apt-get update \
+#    && apt-get install -y --no-install-recommends apt-utils
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -32,8 +39,17 @@ RUN apt-get update \
     && docker-php-ext-install mcrypt
 
 # Install Intl
-RUN apt-get update \
-    && apt-get install -y libicu-dev \
+#RUN apt-get update \
+#    && apt-get install -y libicu-dev \
+#    && docker-php-ext-install intl
+
+RUN curl -sS -o /tmp/icu.tar.gz -L http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz \
+    && tar -zxf /tmp/icu.tar.gz -C /tmp \
+    && cd /tmp/icu/source \
+    && ./configure --prefix=/usr/local \
+    && make \
+    && make install
+RUN docker-php-ext-configure intl --with-icu-dir=/usr/local \
     && docker-php-ext-install intl
 
 # Install Mysql
@@ -44,25 +60,20 @@ RUN apt-get update \
     && apt-get install -y libxml2-dev \
     && docker-php-ext-install soap
 
+# Install opcache
+RUN docker-php-ext-install opcache
+
 # Install PHP zip extension
 RUN docker-php-ext-install zip
 
-## Install xdebug
-#RUN pecl install xdebug
-#RUN docker-php-ext-enable xdebug
-#RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-#RUN echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-#RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-#RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-#RUN echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-#RUN echo "xdebug.idekey=\"PHPSTORM\"" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-#RUN echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-##RUN echo "xdebug.remote_host=172.17.0.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
+# Install xdebug
 ENV XDEBUG_ENABLE 0
 RUN pecl install xdebug \
     && rm -rf /tmp/pear
 COPY ./xdebug.ini.disabled /usr/local/etc/php/conf.d/
+
+# Copy my own php.ini
+COPY ./php.ini /usr/local/etc/php/
 
 RUN echo 'alias ll="ls -l"' >> ~/.bashrc
 RUN echo 'alias sf="php app/console"' >> ~/.bashrc
@@ -72,4 +83,5 @@ WORKDIR /var/www/symfony
 
 # Start!
 COPY ./start /usr/local/bin/
+RUN chmod +x /usr/local/bin/start
 CMD ["start"]

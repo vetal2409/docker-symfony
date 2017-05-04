@@ -19,6 +19,8 @@ services:
         volumes:
             - ${SYMFONY_APP_PATH}:/var/www/symfony
             - ./logs/symfony:/var/www/symfony/var/logs
+        environment:
+            XDEBUG_ENABLE: ${XDEBUG_ENABLE}
     nginx:
         build: nginx
         container_name: symfony_nginx
