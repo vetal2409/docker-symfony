@@ -1,11 +1,11 @@
 version: '2'
 
 services:
-    db:
+    shop_db:
         image: mysql:5.7.18
-        container_name: symfony_db
+        container_name: ivaldi_shop_db
         ports:
-            - 33060:3306
+            - 33061:3306
         volumes:
             - "./.data/db:/var/lib/mysql"
         environment:
@@ -15,29 +15,29 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     php:
         build: php7.1-fpm
-        container_name: symfony_php
+        container_name: ivaldi_shop_php
         volumes:
             - ${SYMFONY_APP_PATH}:/var/www/symfony
             - ./logs/symfony:/var/www/symfony/var/logs
         environment:
             XDEBUG_ENABLE: ${XDEBUG_ENABLE}
-    nginx:
+    shop_nginx:
         build: nginx
-        container_name: symfony_nginx
+        container_name: ivaldi_shop_nginx
         ports:
-            - 800:80
+            - 801:80
         volumes_from:
             - php
         volumes:
             - ./logs/nginx/:/var/log/nginx
     elk:
         image: willdurand/elk
-        container_name: symfony_elk
+        container_name: ivaldi_elk
         ports:
-            - 810:80
+            - 811:80
         volumes:
             - ./elk/logstash:/etc/logstash
             - ./elk/logstash/patterns:/opt/logstash/patterns
         volumes_from:
             - php
-            - nginx
+            - shop_nginx
