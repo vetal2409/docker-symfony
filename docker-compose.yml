@@ -14,7 +14,7 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     php:
-        build: php7.1-fpm
+        build: main
         container_name: ivaldi_shop_php
         volumes:
             - ${SYMFONY_APP_PATH}:/var/www/symfony
@@ -22,6 +22,7 @@ services:
         environment:
             XDEBUG_ENABLE: ${XDEBUG_ENABLE}
             PHP_TIMEZONE: ${PHP_TIMEZONE}
+            SYLIUS_APP_DEV_PERMITTED: 1
     shop_nginx:
         build: nginx
         container_name: ivaldi_shop_nginx
