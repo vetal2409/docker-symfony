@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Enable XDebug if needed
+if [ "$XDEBUG_ENABLE" = "1" ]; then
+    docker-php-ext-enable xdebug
+    mv /usr/local/etc/php/conf.d/xdebug.ini.disabled /usr/local/etc/php/conf.d/xdebug.ini
+    # Configure XDebug remote host
+    if [ -z "$HOST_IP" ]; then
+        # Allows to set HOST_IP by env variable because could be different from the one which come from ip route command
+        HOST_IP=$(/sbin/ip route|awk '/default/ { print $3 }')
+    fi;
+    echo "xdebug.remote_host=$HOST_IP" > /usr/local/etc/php/conf.d/xdebug_remote_host.ini
+fi;
