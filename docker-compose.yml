@@ -21,6 +21,7 @@ services:
             - ./logs/symfony:/var/www/symfony/var/logs
         environment:
             XDEBUG_ENABLE: ${XDEBUG_ENABLE}
+            PHP_TIMEZONE: ${PHP_TIMEZONE}
     shop_nginx:
         build: nginx
         container_name: ivaldi_shop_nginx

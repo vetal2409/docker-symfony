@@ -72,8 +72,14 @@ RUN pecl install xdebug \
     && rm -rf /tmp/pear
 COPY ./xdebug.ini.disabled /usr/local/etc/php/conf.d/
 
+# Install exif
+RUN docker-php-ext-install exif
+
 # Copy my own php.ini
 COPY ./php.ini /usr/local/etc/php/
+
+# Define PHP_TIMEZONE env variable
+ENV PHP_TIMEZONE Europe/Berlin
 
 RUN echo 'alias ll="ls -l"' >> ~/.bashrc
 RUN echo 'alias sf="php app/console"' >> ~/.bashrc
