@@ -3,6 +3,9 @@
 # Configure PHP date.timezone
 echo "date.timezone = $PHP_TIMEZONE" > /usr/local/etc/php/conf.d/timezone.ini
 
+# Configure PHP memory limit
+echo "memory_limit = $MEMORY_LIMIT" > /usr/local/etc/php/conf.d/memory_limit.ini
+
 # Enable XDebug if needed
 if [ "$XDEBUG_ENABLE" = "1" ]; then
     docker-php-ext-enable xdebug

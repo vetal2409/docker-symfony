@@ -81,6 +81,9 @@ COPY ./php.ini /usr/local/etc/php/
 # Define PHP_TIMEZONE env variable
 ENV PHP_TIMEZONE Europe/Berlin
 
+# Define PHP_TIMEZONE env variable
+ENV MEMORY_LIMIT 512M
+
 RUN echo 'alias ll="ls -l"' >> ~/.bashrc
 RUN echo 'alias sf="php app/console"' >> ~/.bashrc
 RUN echo 'alias sf3="php bin/console"' >> ~/.bashrc
