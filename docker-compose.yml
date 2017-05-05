@@ -23,6 +23,7 @@ services:
             XDEBUG_ENABLE: ${XDEBUG_ENABLE}
             PHP_TIMEZONE: ${PHP_TIMEZONE}
             SYLIUS_APP_DEV_PERMITTED: 1
+            MEMORY_LIMIT: ${MEMORY_LIMIT}
     shop_nginx:
         build: nginx
         container_name: ivaldi_shop_nginx
