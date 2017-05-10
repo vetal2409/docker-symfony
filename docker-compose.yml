@@ -20,6 +20,7 @@ services:
             - ${WORK_DIR_PATH}:/var/www/default
         environment:
             XDEBUG_ENABLE: ${XDEBUG_ENABLE}
+            IS_SYMFONY_3: ${IS_SYMFONY_3}
     nginx:
         build: nginx
         container_name: symfony_nginx
