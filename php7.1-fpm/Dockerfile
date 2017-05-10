@@ -1,4 +1,3 @@
-# Created 27.04.2017
 FROM php:7.1.4-fpm
 
 MAINTAINER Vitalii Sydorenko <vetal.sydo@gmail.com>
@@ -13,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     tree
 
 ## Install apt-utils
-#ARG DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 #RUN apt-get update \
 #    && apt-get install -y --no-install-recommends apt-utils
 
@@ -79,16 +78,18 @@ RUN docker-php-ext-install exif
 COPY ./php.ini /usr/local/etc/php/
 
 # Define PHP_TIMEZONE env variable
-ENV PHP_TIMEZONE Europe/Berlin
+ENV PHP_TIMEZONE Europe/Kiev
 
 # Define PHP_TIMEZONE env variable
 ENV MEMORY_LIMIT 512M
 
-RUN echo 'alias ll="ls -l"' >> ~/.bashrc
-RUN echo 'alias sf="php app/console"' >> ~/.bashrc
-RUN echo 'alias sf3="php bin/console"' >> ~/.bashrc
+ENV IS_SYMFONY_2 = 0
+ENV IS_SYMFONY_3 = 0
 
-WORKDIR /var/www/symfony
+
+RUN echo 'alias ll="ls -l"' >> ~/.bashrc
+
+WORKDIR /var/www/default
 
 # Start!
 COPY ./start /usr/local/bin/

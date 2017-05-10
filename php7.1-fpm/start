@@ -18,4 +18,14 @@ if [ "$XDEBUG_ENABLE" = "1" ]; then
     echo "xdebug.remote_host=$HOST_IP" > /usr/local/etc/php/conf.d/xdebug_remote_host.ini
 fi;
 
+
+# [Create aliases]
+
+# sf
+if [ "$IS_SYMFONY_3" = "1" ]; then
+    echo 'alias sf="php bin/console"' >> ~/.bashrc
+elif [ "$IS_SYMFONY_2" = "1" ]; then
+    echo 'alias sf="php app/console"' >> ~/.bashrc
+fi;
+
 exec "php-fpm"

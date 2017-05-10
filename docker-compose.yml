@@ -17,28 +17,13 @@ services:
         build: php7.1-fpm
         container_name: symfony_php
         volumes:
-            - ${SYMFONY_APP_PATH}:/var/www/symfony
-            - ./logs/symfony:/var/www/symfony/var/logs
+            - ${WORK_DIR_PATH}:/var/www/default
         environment:
             XDEBUG_ENABLE: ${XDEBUG_ENABLE}
-            PHP_TIMEZONE: ${PHP_TIMEZONE}
     nginx:
         build: nginx
         container_name: symfony_nginx
         ports:
             - 800:80
-        volumes_from:
-            - php
         volumes:
-            - ./logs/nginx/:/var/log/nginx
-    elk:
-        image: willdurand/elk
-        container_name: symfony_elk
-        ports:
-            - 810:80
-        volumes:
-            - ./elk/logstash:/etc/logstash
-            - ./elk/logstash/patterns:/opt/logstash/patterns
-        volumes_from:
-            - php
-            - nginx
+            - ${WORK_DIR_PATH}:/var/www/default
